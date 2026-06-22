@@ -205,13 +205,49 @@
 
     /* ── States ── */
     .state { padding: 60px 24px; text-align: center; color: var(--grey-5); font-size: 14px; }
+
+    /* ── Don't miss out ── */
+    .dmo { border-top: 1px solid var(--grey-2); padding: 28px 24px; max-width: 1280px; margin: 0 auto; display: none; }
+    .dmo__header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
+    .dmo__title { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); }
+    .dmo__sub { font-size: 12px; color: var(--grey-5); }
+    .dmo__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .dmo__card { border: 1px solid #fce4e4; border-radius: 8px; overflow: hidden; display: flex; text-decoration: none; color: inherit; transition: box-shadow 0.2s; background: #fff; }
+    .dmo__card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .dmo__img { width: 90px; min-height: 90px; object-fit: cover; flex-shrink: 0; }
+    .dmo__body { padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+    .dmo__avail { font-size: 10px; font-weight: 600; color: var(--red); letter-spacing: 0.04em; text-transform: uppercase; }
+    .dmo__name { font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--black); }
+    .dmo__meta { font-size: 11px; color: var(--grey-5); margin-top: auto; }
+
+    /* ── Testimonials ── */
+    .testi { border-top: 1px solid var(--grey-2); background: var(--grey-1); padding: 36px 24px; }
+    .testi__inner { max-width: 1280px; margin: 0 auto; }
+    .testi__header { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-5); margin-bottom: 20px; }
+    .testi__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .testi__card { background: var(--white); border-radius: 8px; padding: 20px; border: 1px solid var(--grey-2); }
+    .testi__quote { font-size: 14px; line-height: 1.6; color: #333; margin-bottom: 14px; font-style: italic; }
+    .testi__attr { display: flex; align-items: center; gap: 10px; }
+    .testi__avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--grey-3); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--grey-5); flex-shrink: 0; }
+    .testi__name { font-size: 12px; font-weight: 600; color: var(--black); }
+    .testi__tour { font-size: 11px; color: var(--grey-5); }
+    .testi__stars { font-size: 11px; color: #f0a500; letter-spacing: 2px; margin-bottom: 2px; }
+    .testi__placeholder { font-size: 11px; color: var(--grey-3); text-align: center; padding: 8px 0; border-top: 1px solid var(--grey-2); margin-top: 12px; }
     .freshness { background: #fff8e1; border-bottom: 1px solid #ffe082; padding: 10px 24px; font-size: 12px; color: #5d4037; display: none; }
+    .timestamp { border-bottom: 1px solid var(--grey-2); padding: 7px 24px; font-size: 11px; color: var(--grey-5); display: flex; align-items: center; gap: 6px; }
+    .timestamp__dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; display: inline-block; }
+    .timestamp__stale { background: #f5a623; }
   </style>
 </head>
 <body>
 
   <div class="freshness" id="freshnessWarning">
     Data may be outdated — last updated more than 3 hours ago.
+  </div>
+
+  <div class="timestamp" id="timestamp" style="display:none;">
+    <span class="timestamp__dot" id="timestampDot"></span>
+    <span id="timestampText"></span>
   </div>
 
   <div class="toolbar">
@@ -243,6 +279,49 @@
     </div>
   </div>
 
+  <div id="dmoSection" class="dmo">
+    <div class="dmo__header">
+      <span class="dmo__title">Don't miss out</span>
+      <span class="dmo__sub">Limited spaces remaining on these tours</span>
+    </div>
+    <div class="dmo__grid" id="dmoGrid"></div>
+  </div>
+
+  <div class="testi">
+    <div class="testi__inner">
+      <div class="testi__header">What our travellers say</div>
+      <div class="testi__grid">
+        <div class="testi__card">
+          <div class="testi__stars">★★★★★</div>
+          <div class="testi__quote">"An absolutely life-changing experience. The expert guides brought the science to life in a way I never expected. Madagascar exceeded every expectation."</div>
+          <div class="testi__attr">
+            <div class="testi__avatar">SR</div>
+            <div><div class="testi__name">Sarah R.</div><div class="testi__tour">Madagascar expedition, 2025</div></div>
+          </div>
+          <div class="testi__placeholder">Placeholder — connect to reviews API</div>
+        </div>
+        <div class="testi__card">
+          <div class="testi__stars">★★★★★</div>
+          <div class="testi__quote">"The Galapagos cruise was everything Darwin promised and more. Small group, incredible wildlife, and scientists who genuinely love what they do."</div>
+          <div class="testi__attr">
+            <div class="testi__avatar">MT</div>
+            <div><div class="testi__name">Michael T.</div><div class="testi__tour">Galapagos cruise, 2025</div></div>
+          </div>
+          <div class="testi__placeholder">Placeholder — connect to reviews API</div>
+        </div>
+        <div class="testi__card">
+          <div class="testi__stars">★★★★★</div>
+          <div class="testi__quote">"Worth every penny. The Churchill polar bear experience was humbling. Watching these magnificent animals in the wild with experts explaining their behaviour was extraordinary."</div>
+          <div class="testi__attr">
+            <div class="testi__avatar">JK</div>
+            <div><div class="testi__name">James K.</div><div class="testi__tour">Churchill polar bears, 2024</div></div>
+          </div>
+          <div class="testi__placeholder">Placeholder — connect to reviews API</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="loadingState" class="state">Loading tours...</div>
 
 <script>
@@ -267,6 +346,7 @@
     renderTiles(tours);
     renderSoon(tours);
     renderGrid(tours, 3);
+    renderDmo(tours);
   })
   .catch(function() {
     document.getElementById('loadingState').textContent = 'Unable to load tours. Please try again later.';
@@ -274,8 +354,26 @@
 
   function checkFreshness(tours) {
     if (!tours.length) return;
-    if ((Date.now() - new Date(tours[0].last_scraped)) / 3600000 > 3) {
+    var lastScraped = new Date(tours[0].last_scraped);
+    var ageHours = (Date.now() - lastScraped) / 3600000;
+
+    var ukTime = lastScraped.toLocaleString('en-GB', {
+      timeZone: 'Europe/London',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    var ts = document.getElementById('timestamp');
+    var dot = document.getElementById('timestampDot');
+    ts.style.display = 'flex';
+    document.getElementById('timestampText').textContent = 'Last scraped: ' + ukTime;
+
+    if (ageHours > 3) {
       document.getElementById('freshnessWarning').style.display = 'block';
+      dot.classList.add('timestamp__stale');
     }
   }
 
@@ -344,6 +442,24 @@
         ].join('');
       }).join('') +
       '</div>';
+  }
+
+  function renderDmo(tours) {
+    var limited = tours.filter(function(t) { return t.availability; });
+    if (!limited.length) return;
+    document.getElementById('dmoSection').style.display = 'block';
+    document.getElementById('dmoGrid').innerHTML = limited.map(function(t) {
+      return [
+        '<a class="dmo__card" href="' + esc(t.url) + '" target="_blank" rel="noopener">',
+          '<img class="dmo__img" src="' + esc(t.image_url) + '" alt="' + esc(t.title) + '" loading="lazy">',
+          '<div class="dmo__body">',
+            '<div class="dmo__avail">' + esc(t.availability) + '</div>',
+            '<div class="dmo__name">' + esc(t.title) + '</div>',
+            '<div class="dmo__meta">' + esc(t.duration) + ' · ' + esc(t.date) + '</div>',
+          '</div>',
+        '</a>'
+      ].join('');
+    }).join('');
   }
 
   function renderSoon(tours) {
