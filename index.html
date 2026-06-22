@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NS Discovery Tours — Template Prototype</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ns-black:    #0a0a0a;
+      --ns-white:    #ffffff;
+      --ns-red:      #e02020;
+      --ns-grey-100: #f5f5f5;
+      --ns-grey-300: #d4d4d4;
+      --ns-grey-600: #737373;
+      --ns-grey-800: #262626;
+      --radius:      4px;
+      --font:        -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--ns-white);
+      color: var(--ns-black);
+    }
+
+    /* ── Header ── */
+    .proto-header {
+      background: var(--ns-black);
+      color: var(--ns-white);
+      padding: 12px 24px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .proto-header span {
+      background: var(--ns-red);
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    /* ── Page ── */
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .page-title {
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 16px;
+      color: var(--ns-grey-600);
+      margin-bottom: 32px;
+    }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .filter-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--ns-grey-300);
+      border-radius: 20px;
+      background: var(--ns-white);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--ns-black);
+    }
+
+    .filter-btn.active {
+      background: var(--ns-black);
+      color: var(--ns-white);
+      border-color: var(--ns-black);
+    }
+
+    /* ── Grid ── */
+    .tours-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── Card ── */
+    .tour-card {
+      border: 1px solid var(--ns-grey-300);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tour-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    .tour-card__image {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      display: block;
+      background: var(--ns-grey-100);
+    }
+
+    .tour-card__body {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tour-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tour-card__type {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ns-grey-600);
+    }
+
+    .tour-card__availability {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ns-red);
+      margin-left: auto;
+    }
+
+    .tour-card__title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    .tour-card__details {
+      display: flex;
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--ns-grey-100);
+    }
+
+    .tour-card__detail {
+      font-size: 12px;
+      color: var(--ns-grey-600);
+    }
+
+    .tour-card__detail strong {
+      display: block;
+      font-size: 13px;
+      color: var(--ns-black);
+      font-weight: 600;
+    }
+
+    /* ── States ── */
+    .state {
+      padding: 60px 0;
+      text-align: center;
+      color: var(--ns-grey-600);
+      font-size: 15px;
+    }
+
+    .state--error {
+      color: var(--ns-red);
+    }
+
+    /* ── Freshness warning ── */
+    .freshness-warning {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #5d4037;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    /* ── Count ── */
+    .tours-count {
+      font-size: 13px;
+      color: var(--ns-grey-600);
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="proto-header">
+    <span>Prototype</span>
+    Piano.io template — NS Discovery Tours · Data via Supabase API
+  </div>
+
+  <div class="page">
+    <h1 class="page-title">Nature and conservation tours</h1>
+    <p class="page-subtitle">Expert-led expeditions exploring the natural world</p>
+
+    <div class="freshness-warning" id="freshnessWarning">
+      ⚠️ Tour data may be outdated — last updated more than 3 hours ago.
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-type="all">All tours</button>
+    </div>
+
+    <div class="tours-count" id="toursCount"></div>
+
+    <div id="toursContainer">
+      <div class="state">Loading tours...</div>
+    </div>
+  </div>
+
+  <script>
+    var SUPABASE_URL = 'https://udizygtdacdqjenvvjgb.supabase.co/rest/v1/tours';
+    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaXp5Z3RkYWNkcWplbnZ2amdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNTExMDQsImV4cCI6MjA5NzcyNzEwNH0.tlnNpL9bM-tibMCIoEhgUUJnn8zrPXlK-WJCjE5ifxI';
+
+    var allTours = [];
+    var activeFilter = 'all';
+
+    // ── Fetch ──
+    fetch(SUPABASE_URL + '?category=eq.nature&order=date.asc', {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(tours) {
+      allTours = tours;
+      checkFreshness(tours);
+      buildFilters(tours);
+      renderTours(tours);
+    })
+    .catch(function(err) {
+      document.getElementById('toursContainer').innerHTML =
+        '<div class="state state--error">Unable to load tours. Please try again later.</div>';
+    });
+
+    // ── Freshness check ──
+    function checkFreshness(tours) {
+      if (!tours.length) return;
+      var lastScraped = new Date(tours[0].last_scraped);
+      var ageHours = (Date.now() - lastScraped) / 1000 / 60 / 60;
+      if (ageHours > 3) {
+        document.getElementById('freshnessWarning').style.display = 'block';
+      }
+    }
+
+    // ── Filters ──
+    function buildFilters(tours) {
+      var types = [...new Set(tours.map(function(t) { return t.type; }))].sort();
+      var container = document.getElementById('filters');
+      types.forEach(function(type) {
+        var btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.dataset.type = type;
+        btn.textContent = type;
+        btn.addEventListener('click', function() { setFilter(type); });
+        container.appendChild(btn);
+      });
+      container.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { setFilter(btn.dataset.type); });
+      });
+    }
+
+    function setFilter(type) {
+      activeFilter = type;
+      document.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.type === type);
+      });
+      var filtered = type === 'all'
+        ? allTours
+        : allTours.filter(function(t) { return t.type === type; });
+      renderTours(filtered);
+    }
+
+    // ── Render ──
+    function renderTours(tours) {
+      var count = document.getElementById('toursCount');
+      var container = document.getElementById('toursContainer');
+
+      count.textContent = tours.length + ' tour' + (tours.length !== 1 ? 's' : '');
+
+      if (!tours.length) {
+        container.innerHTML = '<div class="state">No tours found.</div>';
+        return;
+      }
+
+      container.innerHTML = '<div class="tours-grid">' +
+        tours.map(function(tour) {
+          return [
+            '<a class="tour-card" href="' + tour.url + '" target="_blank" rel="noopener">',
+              '<img class="tour-card__image" src="' + tour.image_url + '" alt="' + escHtml(tour.title) + '" loading="lazy">',
+              '<div class="tour-card__body">',
+                '<div class="tour-card__meta">',
+                  '<span class="tour-card__type">' + escHtml(tour.type) + '</span>',
+                  tour.availability ? '<span class="tour-card__availability">' + escHtml(tour.availability) + '</span>' : '',
+                '</div>',
+                '<h2 class="tour-card__title">' + escHtml(tour.title) + '</h2>',
+                '<div class="tour-card__details">',
+                  '<div class="tour-card__detail"><strong>' + escHtml(tour.date) + '</strong>Departure</div>',
+                  '<div class="tour-card__detail"><strong>' + escHtml(tour.duration) + '</strong>Duration</div>',
+                '</div>',
+              '</div>',
+            '</a>'
+          ].join('');
+        }).join('') +
+      '</div>';
+    }
+
+    function escHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
+
+</body>
+</html>
