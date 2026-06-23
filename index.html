@@ -235,6 +235,21 @@
     .testi__placeholder { font-size: 11px; color: var(--grey-3); text-align: center; padding: 8px 0; border-top: 1px solid var(--grey-2); margin-top: 12px; }
     .freshness { background: #fff8e1; border-bottom: 1px solid #ffe082; padding: 10px 24px; font-size: 12px; color: #5d4037; display: none; }
     .timestamp { border-bottom: 1px solid var(--grey-2); padding: 7px 24px; font-size: 11px; color: var(--grey-5); display: flex; align-items: center; gap: 6px; }
+
+    /* ── Page header ── */
+    .page-header { padding: 32px 24px 28px; max-width: 1280px; margin: 0 auto; border-bottom: 1px solid var(--grey-2); margin-bottom: 0; }
+    .page-header__eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-5); margin-bottom: 10px; }
+    .page-header__title { font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.03em; color: var(--black); margin-bottom: 12px; line-height: 1.1; }
+    .page-header__copy { font-size: 16px; line-height: 1.6; color: #555; max-width: 640px; }
+
+    /* ── Categories footer ── */
+    .cat-footer { border-top: 1px solid var(--grey-2); padding: 36px 24px; background: var(--grey-1); }
+    .cat-footer__inner { max-width: 1280px; margin: 0 auto; }
+    .cat-footer__title { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-5); margin-bottom: 20px; }
+    .cat-footer__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    .cat-footer__item { border: 1px solid var(--grey-2); border-radius: 8px; padding: 14px 16px; background: var(--white); text-decoration: none; color: var(--black); font-size: 13px; font-weight: 500; transition: box-shadow 0.15s; display: flex; align-items: center; gap: 8px; }
+    .cat-footer__item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: var(--black); }
+    .cat-footer__item span { font-size: 18px; }
     .timestamp__dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; display: inline-block; }
     .timestamp__stale { background: #f5a623; }
   </style>
@@ -254,9 +269,12 @@
     <span class="toolbar__logo">New Scientist</span>
     <span class="toolbar__sep">/</span>
     <span class="toolbar__section">Discovery Tours</span>
-    <div class="toolbar__filters" id="filters">
-      <button class="tf active" data-type="all">All tours</button>
-    </div>
+  </div>
+
+  <div class="page-header">
+    <div class="page-header__eyebrow">Nature &amp; conservation</div>
+    <h1 class="page-header__title">Explore the natural world with expert scientists</h1>
+    <p class="page-header__copy">From rainforests to polar regions, our nature tours offer unparalleled access to the planet's most extraordinary ecosystems. Join small groups led by world-leading naturalists and scientists who bring the science to life in the field.</p>
   </div>
 
   <div id="heroContainer"></div>
@@ -271,8 +289,11 @@
 
   <div id="gridSection" style="display:none;">
     <div class="section-header">
-      <h2>All tours</h2>
+      <h2 id="gridLabel">All tours</h2>
       <span class="section-header__count" id="gridCount"></span>
+      <div class="toolbar__filters" id="filters" style="margin-left:auto;">
+        <button class="tf active" data-type="all">All</button>
+      </div>
     </div>
     <div class="grid-wrap">
       <div class="grid" id="grid"></div>
@@ -468,6 +489,8 @@
     var soon = tours.filter(function(t) {
       var d = new Date(t.date);
       return d - now > 0 && d - now < ninety;
+    }).sort(function(a, b) {
+      return new Date(a.date) - new Date(b.date);
     });
     if (!soon.length) return;
     document.getElementById('soonSection').style.display = 'block';
@@ -494,7 +517,8 @@
   function renderGrid(tours, skip) {
     var display = tours.slice(skip);
     document.getElementById('gridSection').style.display = display.length ? 'block' : 'none';
-    document.getElementById('gridCount').textContent = allTours.length + ' tours';
+    var shown = display.length;
+    document.getElementById('gridCount').textContent = shown + ' tour' + (shown !== 1 ? 's' : '');
     document.getElementById('grid').innerHTML = display.map(function(t) {
       return [
         '<a class="card" href="' + esc(t.url) + '" target="_blank" rel="noopener">',
@@ -520,6 +544,22 @@
 
 })();
 </script>
+
+  <div class="cat-footer">
+    <div class="cat-footer__inner">
+      <div class="cat-footer__title">Explore other categories</div>
+      <div class="cat-footer__grid">
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/marine/"><span>🐋</span>Marine</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/geology/"><span>🪨</span>Geology</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/archaeology/"><span>🏺</span>Archaeology</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/history/"><span>📜</span>History</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/space/"><span>🔭</span>Astronomy</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/uk-short-breaks/"><span>🇬🇧</span>UK Breaks</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/geology/"><span>⛏️</span>Geology</a>
+        <a class="cat-footer__item" href="https://www.newscientist.com/tours/total-solar-eclipse-tours-cruises/"><span>🌑</span>Eclipse</a>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
