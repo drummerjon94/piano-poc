@@ -177,9 +177,16 @@ def parse_tours(html: str, category: str) -> list[dict]:
 
             title = event_data["event_object_text"]
             availability = None
+
+            # Format 1: "2 places remaining: Tour name" (prefix with colon)
             if ": " in title and "place" in title.lower().split(":")[0]:
                 prefix, title = title.split(": ", 1)
                 availability = prefix.strip()
+
+            # Format 2: "Tour name - 1 place remaining" (suffix with dash)
+            elif " - " in title and "place" in title.lower().split(" - ")[-1]:
+                title, suffix = title.rsplit(" - ", 1)
+                availability = suffix.strip()
 
             tours.append({
                 "title": title.strip(),
